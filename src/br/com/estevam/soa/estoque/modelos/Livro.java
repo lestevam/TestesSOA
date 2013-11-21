@@ -1,18 +1,24 @@
 package br.com.estevam.soa.estoque.modelos;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import br.com.estevam.soa.estoque.adaptadores.AdaptadorAutores;
 
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlSeeAlso(EBook.class)
 public class Livro {
 	
 	public Livro(){}
 	
-	public Livro(Integer anoDePublicacao, List<String> autores, String editora, String nome, String resumo){
+	public Livro(Integer anoDePublicacao, List<Autor> autores, String editora, String nome, String resumo){
 		super();
 		this.anoDePublicacao = anoDePublicacao;
 		this.autores = autores;
@@ -21,11 +27,12 @@ public class Livro {
 		this.resumo = resumo;
 	}
 	
+	private Date dataDeCriacao = new Date();
 	private String nome;
-	
 	@XmlElementWrapper(name="autores")
 	@XmlElement(name="autor")
-	private List<String> autores;
+	@XmlJavaTypeAdapter(value = AdaptadorAutores.class)
+	private List<Autor> autores;
 	private String editora;
 	private Integer anoDePublicacao;
 	private String resumo;
@@ -37,10 +44,10 @@ public class Livro {
 		this.nome = nome;
 	}
 	
-	public List<String> getAutores() {
+	public List<Autor> getAutores() {
 		return autores;
 	}
-	public void setAutores(List<String> autores) {
+	public void setAutores(List<Autor> autores) {
 		this.autores = autores;
 	}
 	
